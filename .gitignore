@@ -1,0 +1,9 @@
+.idea
+*.iml
+venv/*
+*.pyc
+local.py
+*.db
+static/css/
+media/
+fixtures/*

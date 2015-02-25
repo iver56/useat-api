@@ -2,7 +2,16 @@ from .models import Room
 from rest_framework import serializers
 
 
-class RoomSerializer(serializers.ModelSerializer):
+class RoomListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = [
+            'id',
+            'name'
+        ]
+
+
+class RoomDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = [

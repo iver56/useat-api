@@ -7,7 +7,10 @@ class RoomListSerializer(serializers.ModelSerializer):
         model = Room
         fields = [
             'id',
-            'name'
+            'name',
+            'capacity',
+            'building_name',
+            'floor'
         ]
 
 
@@ -17,5 +20,11 @@ class RoomDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            'floor'
+            'capacity',
+            'building_name',
+            'floor',
+            'available_since',
+            'has_speakers',
+            'has_projector',
+            'has_black_board'
         ]

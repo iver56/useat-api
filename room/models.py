@@ -13,7 +13,10 @@ class Room(models.Model):
         blank=True,
         help_text="How many persons is the room intended for?"
     )
-    available_since = models.DateTimeField(null=True, blank=True)
+    available_since = models.DateTimeField(null=True,
+                                           blank=True,
+                                           help_text="Is NULL when the room is occupied")
+    last_sensor_reading_time = models.DateTimeField(null=True, blank=True)
 
     # Features
     has_speakers = models.BooleanField(default=False)

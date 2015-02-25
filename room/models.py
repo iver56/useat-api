@@ -7,6 +7,19 @@ class Room(models.Model):
     floor = models.IntegerField(null=True,
                                 blank=True,
                                 help_text='0 (zero) represents the ground floor')
+    building_name = models.CharField(max_length=50, null=True, blank=True)
+    capacity = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="How many persons is the room intended for?"
+    )
+    available_since = models.DateTimeField(null=True, blank=True)
+
+    # Features
+    has_speakers = models.BooleanField(default=False)
+    has_projector = models.BooleanField(default=False)
+    has_black_board = models.BooleanField(default=False)
+
 
     def __unicode__(self):
         return smart_unicode(

@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from django.utils import timezone
+from hub.models import Hub
 
 
 class RoomViewSet(viewsets.ModelViewSet):
@@ -19,6 +20,20 @@ class RoomViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['post'])
     def report_availability(self, request, pk=None):
         room = self.get_object()
+
+        try:
+            hub_token = request.DATA['hub_token']
+        except:
+            raise ParseError(detail='hub_token must be specified')
+
+        try:
+            hub = Hub.objects.get(token=hub_token)
+        except Hub.DoesNotExist:
+            raise PermissionDenied()
+
+        if not hub.room_permissions.filter(id=room.id).exists():
+            raise PermissionDenied()
+
         try:
             is_available = int(request.DATA['is_available'])
         except:

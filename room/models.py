@@ -1,5 +1,10 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.utils.encoding import smart_unicode
+from django.contrib.gis.geos import Point
+
+
+def default_point():
+    return Point(0, 0)
 
 
 class Room(models.Model):
@@ -18,10 +23,14 @@ class Room(models.Model):
                                            help_text="Is NULL when the room is occupied")
     last_sensor_reading_time = models.DateTimeField(null=True, blank=True)
 
+    position = models.PointField(blank=False, default=default_point)
+
     # Features
     has_speakers = models.BooleanField(default=False)
     has_projector = models.BooleanField(default=False)
     has_black_board = models.BooleanField(default=False)
+
+    objects = models.GeoManager()
 
     def __unicode__(self):
         return smart_unicode(

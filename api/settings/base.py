@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'corsheaders',
 
-    'room'
+    'room',
+    'hub'
 )
 
 MIDDLEWARE_CLASSES = (

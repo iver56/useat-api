@@ -23,7 +23,6 @@ class Room(models.Model):
     has_projector = models.BooleanField(default=False)
     has_black_board = models.BooleanField(default=False)
 
-
     def __unicode__(self):
         return smart_unicode(
             "Room " + self.name + ", floor: " + str(self.floor)

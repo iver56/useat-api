@@ -66,6 +66,9 @@ class RoomViewSet(viewsets.ModelViewSet):
             room.available_since = timezone.now()
         else:
             room.available_since = None
+
+        room.last_sensor_reading_time = timezone.now()
+
         room.save()
 
         return Response({'status': 'ok'})

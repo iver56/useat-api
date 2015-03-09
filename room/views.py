@@ -18,6 +18,9 @@ class RoomViewSet(viewsets.ModelViewSet):
         return RoomListSerializer
 
     def get_queryset(self):
+        if self.action not in {'retrieve', 'list'}:
+            return Room.objects.all()
+
         lat = self.request.QUERY_PARAMS.get('lat', None)
         lon = self.request.QUERY_PARAMS.get('lon', None)
 

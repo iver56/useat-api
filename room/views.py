@@ -7,15 +7,32 @@ from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
 from django.utils import timezone
 from hub.models import Hub
+from django.contrib.gis.geos import Point
 
 
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all()
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return RoomDetailSerializer
         return RoomListSerializer
+
+    def get_queryset(self):
+        lat = self.request.QUERY_PARAMS.get('lat', None)
+        lon = self.request.QUERY_PARAMS.get('lon', None)
+
+        if lat is None or lon is None:
+            raise ParseError(detail="lat and lon are required query params")
+
+        try:
+            lat = float(lat)
+            lon = float(lon)
+        except ValueError:
+            raise ParseError(detail="lat or lon is not float")
+
+        ref_location = Point(lon, lat)
+
+        return Room.objects.all().distance(ref_location).order_by('distance')
 
     @detail_route(methods=['post'])
     def report_availability(self, request, pk=None):

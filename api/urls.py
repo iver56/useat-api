@@ -6,7 +6,7 @@ from rest_framework import routers
 from room import views as room_views
 
 router = routers.DefaultRouter()
-router.register(r'rooms', room_views.RoomViewSet)
+router.register(r'rooms', room_views.RoomViewSet, base_name='rooms')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

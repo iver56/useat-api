@@ -1,7 +1,7 @@
 from .models import Room
 from rest_framework import viewsets
 from .serializers import RoomDetailSerializer, RoomListSerializer
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from django.core.exceptions import PermissionDenied
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -18,7 +18,7 @@ class RoomViewSet(viewsets.ModelViewSet):
         return RoomListSerializer
 
     def get_queryset(self):
-        if self.action not in {'retrieve', 'list'}:
+        if self.action not in {'retrieve', 'list', 'favorites'}:
             return Room.objects.all()
 
         lat = self.request.QUERY_PARAMS.get('lat', None)
@@ -72,3 +72,15 @@ class RoomViewSet(viewsets.ModelViewSet):
         room.save()
 
         return Response({'status': 'ok'})
+
+    @list_route()
+    def favorites(self, request):
+        ids = self.request.QUERY_PARAMS.get('ids', None)
+        if ids is None:
+            raise ParseError(detail="ids required")
+        ids = ids.split(',')
+
+        queryset = self.get_queryset().filter(id__in=ids)
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(queryset, many=True)
+        return Response(serializer.data)

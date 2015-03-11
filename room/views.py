@@ -18,8 +18,9 @@ class RoomViewSet(viewsets.ModelViewSet):
         return RoomListSerializer
 
     def get_queryset(self):
+        queryset = Room.objects.all()
         if self.action not in {'retrieve', 'list', 'favorites'}:
-            return Room.objects.all()
+            return queryset
 
         lat = self.request.QUERY_PARAMS.get('lat', None)
         lon = self.request.QUERY_PARAMS.get('lon', None)
@@ -35,7 +36,10 @@ class RoomViewSet(viewsets.ModelViewSet):
 
         ref_location = Point(lon, lat)
 
-        return Room.objects.all().distance(ref_location).order_by('distance')
+        if self.action == 'list':
+            queryset = queryset.filter(available_since__isnull=False)
+
+        return queryset.distance(ref_location).order_by('distance')
 
     @detail_route(methods=['post'])
     def report_availability(self, request, pk=None):

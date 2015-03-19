@@ -39,6 +39,20 @@ class RoomViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             queryset = queryset.filter(available_since__isnull=False)
 
+            min_capacity_filter = self.request.QUERY_PARAMS.get('min_capacity', None)
+            if min_capacity_filter is not None:
+                try:
+                    min_capacity_filter = int(min_capacity_filter)
+                except:
+                    raise ParseError(detail="min_capacity_filter is not an integer")
+                queryset = queryset.filter(capacity__gte=min_capacity_filter)
+
+            features_filter = self.request.QUERY_PARAMS.get('feature_ids', None)
+            if features_filter is not None:
+                feature_ids = set(features_filter.split(','))
+                for feature_id in feature_ids:
+                    queryset = queryset.filter(features__id=feature_id)
+
         return queryset.distance(ref_location).order_by('distance')
 
     @detail_route(methods=['post'])

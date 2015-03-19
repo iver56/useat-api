@@ -47,9 +47,9 @@ class RoomViewSet(viewsets.ModelViewSet):
                     raise ParseError(detail="min_capacity_filter is not an integer")
                 queryset = queryset.filter(capacity__gte=min_capacity_filter)
 
-            features_filter = self.request.QUERY_PARAMS.get('feature_ids', None)
-            if features_filter is not None:
-                feature_ids = set(features_filter.split(','))
+            feature_ids = self.request.QUERY_PARAMS.get('feature_ids', None)
+            if feature_ids is not None:
+                feature_ids = set(feature_ids.split(','))
                 for feature_id in feature_ids:
                     queryset = queryset.filter(features__id=feature_id)
 

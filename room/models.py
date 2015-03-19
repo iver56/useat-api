@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from django.utils.encoding import smart_unicode
 from django.contrib.gis.geos import Point
+from room_feature.models import RoomFeature
 
 
 def default_point():
@@ -25,10 +26,7 @@ class Room(models.Model):
 
     position = models.PointField(blank=False, default=default_point)
 
-    # Features
-    has_speakers = models.BooleanField(default=False)
-    has_projector = models.BooleanField(default=False)
-    has_black_board = models.BooleanField(default=False)
+    features = models.ManyToManyField(RoomFeature)
 
     objects = models.GeoManager()
 

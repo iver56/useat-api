@@ -2,6 +2,7 @@ from .models import Room
 from rest_framework.serializers import ModelSerializer
 from rest_framework_gis.serializers import GeoModelSerializer
 from rest_framework.serializers import SerializerMethodField
+from room_feature.serializers import RoomFeatureListSerializer
 
 
 class RoomListSerializer(GeoModelSerializer):
@@ -25,11 +26,11 @@ class RoomListSerializer(GeoModelSerializer):
 
 
 class RoomDetailSerializer(RoomListSerializer):
+    features = RoomFeatureListSerializer(many=True)
+
     class Meta(RoomListSerializer.Meta):
         fields = RoomListSerializer.Meta.fields + [
             'available_since',
             'position',
-            'has_speakers',
-            'has_projector',
-            'has_black_board',
+            'features',
         ]

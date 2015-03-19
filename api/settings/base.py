@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'corsheaders',
 
     'room',
+    'room_feature',
     'hub'
 )
 

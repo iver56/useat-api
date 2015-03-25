@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.utils import timezone
 from hub.models import Hub
 from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import Distance
 
 
 class RoomViewSet(viewsets.ModelViewSet):
@@ -54,6 +55,10 @@ class RoomViewSet(viewsets.ModelViewSet):
                 feature_ids = set(feature_ids.split(','))
                 for feature_id in feature_ids:
                     queryset = queryset.filter(features__id=feature_id)
+
+            queryset = queryset.filter(
+                position__distance_lte=(ref_location, Distance(km=2))
+            )
 
         return queryset.distance(ref_location).order_by('distance')
 

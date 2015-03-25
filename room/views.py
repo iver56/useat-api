@@ -1,6 +1,6 @@
 from .models import Room
 from rest_framework import viewsets
-from .serializers import RoomDetailSerializer, RoomListSerializer
+from .serializers import RoomDetailSerializer, RoomListSerializer, RoomFavoritesListSerializer
 from rest_framework.decorators import detail_route, list_route
 from django.core.exceptions import PermissionDenied
 from rest_framework.exceptions import ParseError
@@ -15,6 +15,8 @@ class RoomViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return RoomDetailSerializer
+        elif self.action == 'favorites':
+            return RoomFavoritesListSerializer
         return RoomListSerializer
 
     def get_queryset(self):

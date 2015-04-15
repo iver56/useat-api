@@ -28,7 +28,7 @@ class Room(models.Model):
     mazemap_url = models.CharField(max_length=255, null=True, blank=True,
                                    help_text='Url for embedding mazemap')
 
-    features = models.ManyToManyField(RoomFeature)
+    features = models.ManyToManyField(RoomFeature, blank=True)
 
     objects = models.GeoManager()
 

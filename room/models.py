@@ -25,6 +25,8 @@ class Room(models.Model):
     last_sensor_reading_time = models.DateTimeField(null=True, blank=True)
 
     position = models.PointField(blank=False, default=default_point)
+    mazemap_url = models.CharField(max_length=255, null=True, blank=True,
+                                   help_text='Url for embedding mazemap')
 
     features = models.ManyToManyField(RoomFeature)
 

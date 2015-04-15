@@ -39,4 +39,5 @@ class RoomDetailSerializer(RoomListSerializer):
             'available_since',
             'position',
             'features',
+            'mazemap_url'
         ]
